@@ -2,8 +2,6 @@ import React from 'react'
 import { Collapse, Typography, Button } from 'antd'
 import styled from 'styled-components';
 import { PlusSquareOutlined } from '@ant-design/icons'
-import { AuthContext } from '../../Context/AuthProvider';
-import useFirestore from '../../hooks/useFirestore';
 import { AppContext } from '../../Context/AppProvider';
 
 const { Panel } = Collapse;
@@ -34,7 +32,6 @@ const RoomListHeader = styled.div`
 
 export default function RoomList() {
     const { rooms, setIsAddRoomVisible, setSelectedRoomId } = React.useContext(AppContext);
-    console.log(rooms);
 
     const handleAddRoom = () => {
         setIsAddRoomVisible(true);

@@ -1,5 +1,5 @@
 import { Form, Input, Modal } from 'antd'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import { AppContext } from '../../Context/AppProvider';
 import { AuthContext } from '../../Context/AuthProvider';
 import { addDocument } from '../../firebase/services';
@@ -11,7 +11,6 @@ export default function AddRoomModal() {
 
     const handleOk = () => {
         //add new room to firestore
-        console.log({ FormData: form.getFieldsValue() });
         addDocument('rooms', { ...form.getFieldValue(), members: [uid] });
 
         //reset form value

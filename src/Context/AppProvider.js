@@ -43,8 +43,6 @@ export default function AppProvider({ children }) {
 
     const members = useFirestore('users', usersCondition);
 
-    console.log({ members });
-
     return (
         <AppContext.Provider
             value={{
