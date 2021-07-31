@@ -11,14 +11,14 @@ export default function Login() {
     const handleFacebookLogin = async () => {
         const { additionalUserInfo, user } = await auth.signInWithPopup(fbProvider);
 
-        if (additionalUserInfo) {
+        if (additionalUserInfo?.isNewUser) {
             addDocument('users', {
                 displayName: user.displayName,
                 email: user.email,
                 photoURL: user.photoURL,
                 uid: user.uid,
                 providerId: additionalUserInfo.providerId,
-                keywords: generateKeywords(user.displayName)
+                keywords: generateKeywords(user.displayName?.toLocaleLowerCase())
             });
         }
     };
