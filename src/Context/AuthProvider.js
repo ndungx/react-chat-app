@@ -20,9 +20,10 @@ export default function AuthProvider({ children }) {
                 });
                 setIsLoading(false);
                 history.push('/');
-            } else {
-                history.push('/login');
+                return;
             }
+            setIsLoading(false);
+            history.push('/login');
         });
 
         //clean function
