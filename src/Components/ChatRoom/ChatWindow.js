@@ -1,5 +1,5 @@
 import { UserAddOutlined } from '@ant-design/icons'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 import { Button, Avatar, Tooltip, Input, Form, Alert } from 'antd'
 import Message from './Message'
@@ -12,7 +12,7 @@ const HeaderStyled = styled.div`
     display: flex;
     justify-content: space-between;
     height: 56px;
-    padding: 0 16px;
+    padding: 0 32px;
     align-items: center;
     border-bottom: 1px solid rgb(230, 230, 230);
 
@@ -41,6 +41,9 @@ const ButtonGroupStyled = styled.div`
 
 const WrapperStyled = styled.div`
     height: 100vh;
+    box-shadow: 0px 0px 33px -5px rgba(0,0,0,.3);
+    border-radius: 8px;
+    margin-left: 15px;
 `
 
 const ContentStyled = styled.div`
@@ -68,15 +71,31 @@ const FormStyled = styled(Form)`
 const MessageListStyled = styled.div`
     max-height: 100%;
     overflow-y: auto;
+    padding: 0 16px;
+`
+
+const ButtonStyled = styled(Button)`
+    background: linear-gradient(to right, #6D47EE, #B851FB);
+    border-radius: 6px;
+    color: #fff;
+
+    &:hover {
+        background: linear-gradient(to right, #6D47EE, #B851FB);
+        color: #fff;
+    }
 `
 
 export default function ChatWindow() {
-    const { selectedRoom, members, setIsInviteMemberVisible } = useContext(AppContext);
-    const [imputValue, setInputValue] = useState('');
+    const {
+        selectedRoom, members, setIsInviteMemberVisible
+    } = useContext(AppContext);
+    const [inputValue, setInputValue] = useState('');
     const [form] = Form.useForm();
     const {
         user: { uid, photoURL, displayName }
     } = useContext(AuthContext);
+    const inputRef = useRef(null);
+    const messageListRef = useRef(null);
 
 
     const handleInputChange = (e) => {
@@ -84,15 +103,24 @@ export default function ChatWindow() {
     }
 
     const handleOnSubmit = () => {
-        addDocument('messages', {
-            text: imputValue,
-            uid,
-            photoURL,
-            roomId: selectedRoom.id,
-            displayName
-        });
+        if (inputValue.length > 0) {
+            addDocument('messages', {
+                text: inputValue,
+                uid,
+                photoURL,
+                roomId: selectedRoom.id,
+                displayName
+            });
 
-        form.resetFields(['message']);
+            form.resetFields(['message']);
+
+            //focus input after send message
+            if (inputRef?.current) {
+                setTimeout(() => {
+                    inputRef.current.focus();
+                });
+            }
+        }
     }
 
     const condition = React.useMemo(() => ({
@@ -103,6 +131,13 @@ export default function ChatWindow() {
 
     const messages = useFirestore('messages', condition);
 
+    useEffect(() => {
+        //scroll to bottom after message added to chat room
+        if (messageListRef?.current) {
+            messageListRef.current.scrollTop = messageListRef.current.scrollHeight + 50;
+        }
+    }, [messages]);
+
     return (
         <WrapperStyled>
             {
@@ -111,7 +146,9 @@ export default function ChatWindow() {
                         <HeaderStyled>
                             <div className="header__info">
                                 <p className="header__title">{selectedRoom.name}</p>
-                                <span className="header__description">{selectedRoom.description}</span>
+                                <span className="header__description">
+                                    {selectedRoom.description}
+                                </span>
                             </div>
                             <ButtonGroupStyled>
                                 <Button
@@ -135,7 +172,7 @@ export default function ChatWindow() {
                             </ButtonGroupStyled>
                         </HeaderStyled>
                         <ContentStyled>
-                            <MessageListStyled>
+                            <MessageListStyled ref={messageListRef}>
                                 {
                                     messages.map(message => (
                                         <Message
@@ -151,6 +188,7 @@ export default function ChatWindow() {
                             <FormStyled form={form}>
                                 <Form.Item name="message">
                                     <Input
+                                        ref={inputRef}
                                         onChange={handleInputChange}
                                         onPressEnter={handleOnSubmit}
                                         placeholder="Type a message..."
@@ -158,7 +196,9 @@ export default function ChatWindow() {
                                         autoComplete="off"
                                     />
                                 </Form.Item>
-                                <Button type='primary' onClick={handleOnSubmit}>Send</Button>
+                                <ButtonStyled onClick={handleOnSubmit}>
+                                    Send
+                                </ButtonStyled>
                             </FormStyled>
                         </ContentStyled>
                     </>
@@ -167,11 +207,11 @@ export default function ChatWindow() {
                         message="No room selected"
                         type="info"
                         showIcon
-                        style={{ margin: 5 }}
+                        style={{ margin: 5, marginLeft: 16, marginRight: 16 }}
                         closable
                     />
                 )
             }
         </WrapperStyled>
-    )
+    );
 }
