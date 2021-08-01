@@ -5,16 +5,32 @@ import { auth } from '../../firebase/config';
 import { AuthContext } from '../../Context/AuthProvider';
 
 const WrapperStyled = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-bottom: 1px solid rgba(82,38,83,.1);
+
+    .background {
+        padding: 12px 30px;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 0 0 6px 6px;
+        box-shadow: 0px 26px 33px -5px rgba(200,200,200,.7);
+        width: 100%;
+    }
+
+    .user {
+        display: flex;
+        align-items: center;
+    }
 
     .username {
         color: #656565;
         margin-left: 5px;
+        font-weight: bold;
     }
 
+    .logout-btn {
+        color: #fff;
+        background: linear-gradient(to right, #6D47EE, #B851FB);
+        border-radius: 8px;
+    }
 `;
 
 export default function UserInfo() {
@@ -22,14 +38,22 @@ export default function UserInfo() {
 
     return (
         <WrapperStyled>
-            <div>
-                <Avatar src={photoURL}>
-                    {photoURL ? '' : displayName?.charAt(0)?.toUpperCase()}
-                </Avatar>
-                <Typography.Text className="username">{displayName}</Typography.Text>
-            </div>
-            <div>
-                <Button onClick={() => auth.signOut()}>Sign out</Button>
+            <div className="background">
+                <div className="user">
+                    <Avatar src={photoURL}>
+                        {photoURL ? '' : displayName?.charAt(0)?.toUpperCase()}
+                    </Avatar>
+                    <Typography.Text className="username">
+                        {displayName}
+                    </Typography.Text>
+                </div>
+                <div>
+                    <Button
+                        className="logout-btn"
+                        onClick={() => auth.signOut()}>
+                        Sign out
+                    </Button>
+                </div>
             </div>
         </WrapperStyled>
     )

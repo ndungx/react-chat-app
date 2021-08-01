@@ -1,33 +1,41 @@
 import React from 'react'
-import { Collapse, Typography, Button } from 'antd'
+import { Typography, Button } from 'antd'
 import styled from 'styled-components';
-import { PlusSquareOutlined } from '@ant-design/icons'
+import { PlusOutlined } from '@ant-design/icons'
 import { AppContext } from '../../Context/AppProvider';
 
-const { Panel } = Collapse;
+const RoomListStyled = styled.div`
+    padding: 10px 30px;
 
-const PanelStyled = styled(Panel)`
-    %%% {
-        .ant-collapse-content-box {
-            padding: 0 40px;
-        }
-
-        .add-room {
-            color: #fff;
-            padding: 0;
-        }
+    .add-room {
+        color: #fff;
+        border-radius: 50%;
+        background: linear-gradient(to right, #6D47EE, #B851FB);
     }
 `;
 
 const LinkStyled = styled(Typography.Link)`
     display: block;
     margin-bottom: 5px;
-    color: #313131;
+    color: #000 !important;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 10px;
+    box-shadow: 0px 0px 33px -5px rgba(0,0,0,.3);
+
+    &:hover {
+        background: #f6f6f6;
+    }
 `
 
 const RoomListHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    font-weight: bold;
+    font-size: 30px;
+    align-items: center;
 `
 
 export default function RoomList() {
@@ -38,28 +46,26 @@ export default function RoomList() {
     }
 
     return (
-        <Collapse ghost defaultActiveKey={['1']}>
-            <PanelStyled header="Room List" key="1">
-                <RoomListHeader>
-                    <Typography.Text>Chats</Typography.Text>
-                    <Button
-                        type="text"
-                        icon={<PlusSquareOutlined />}
-                        className="add-room"
-                        onClick={handleAddRoom}
-                    >
-                    </Button>
-                </RoomListHeader>
+        <RoomListStyled>
+            <RoomListHeader>
+                <Typography.Text>Chats</Typography.Text>
+                <Button
+                    type="text"
+                    icon={<PlusOutlined />}
+                    className="add-room"
+                    onClick={handleAddRoom}
+                >
+                </Button>
+            </RoomListHeader>
 
-                {
-                    rooms.map(room => (
-                        <LinkStyled key={room.id} onClick={() => setSelectedRoomId(room.id)}>
-                            {room.name}
-                        </LinkStyled>)
-                    )
-                }
+            {
+                rooms.map(room => (
+                    <LinkStyled key={room.id} onClick={() => setSelectedRoomId(room.id)}>
+                        {room.name}
+                    </LinkStyled>)
+                )
+            }
 
-            </PanelStyled>
-        </Collapse>
+        </RoomListStyled>
     )
 }
