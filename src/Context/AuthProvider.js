@@ -2,8 +2,16 @@ import React, { useState } from 'react'
 import { auth } from '../firebase/config';
 import { useHistory } from 'react-router-dom';
 import { Spin } from 'antd';
+import styled from 'styled-components';
 
 export const AuthContext = React.createContext();
+
+const SpinStyled = styled(Spin)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50vh;
+`
 
 export default function AuthProvider({ children }) {
     const [user, setUser] = useState({});
@@ -33,7 +41,7 @@ export default function AuthProvider({ children }) {
 
     return (
         <AuthContext.Provider value={{ user }}>
-            {isLoading ? <Spin /> : children}
+            {isLoading ? <SpinStyled size='large' /> : children}
         </AuthContext.Provider>
     )
 }
