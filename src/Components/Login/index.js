@@ -6,10 +6,11 @@ import { addDocument, generateKeywords } from '../../firebase/services';
 const { Title } = Typography
 
 const fbProvider = new firebase.auth.FacebookAuthProvider();
+const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export default function Login() {
-    const handleFacebookLogin = async () => {
-        const { additionalUserInfo, user } = await auth.signInWithPopup(fbProvider);
+    const handleLogin = async (provider) => {
+        const { additionalUserInfo, user } = await auth.signInWithPopup(provider);
 
         if (additionalUserInfo?.isNewUser) {
             addDocument('users', {
@@ -30,10 +31,14 @@ export default function Login() {
                     <Title style={{ textAlign: 'center' }} level={3}>
                         Fun Chat
                     </Title>
-                    <Button style={{ width: '100%', marginBottom: 5 }}>
+                    <Button style={{ width: '100%', marginBottom: 5 }}
+                        onClick={() => handleLogin(googleProvider)}
+                    >
                         Login with Google
                     </Button>
-                    <Button style={{ width: '100%' }} onClick={handleFacebookLogin}>
+                    <Button style={{ width: '100%' }}
+                        onClick={() => handleLogin(fbProvider)}
+                    >
                         Login with Facebook
                     </Button>
                 </Col>
