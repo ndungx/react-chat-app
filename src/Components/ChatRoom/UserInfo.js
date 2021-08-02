@@ -12,7 +12,8 @@ const WrapperStyled = styled.div`
         justify-content: space-between;
         border-radius: 0 0 6px 6px;
         box-shadow: 0px 26px 33px -5px rgba(200,200,200,.7);
-        width: 100%;
+        width: 96%;
+        margin: 0 15px;
     }
 
     .user {
