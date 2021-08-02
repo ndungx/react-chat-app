@@ -1,4 +1,5 @@
 # Simple React Chat App
+[![Deploy to Firebase Hosting on merge](https://github.com/ndungx/react-chat-app/actions/workflows/firebase-hosting-merge.yml/badge.svg)](https://github.com/ndungx/react-chat-app/actions/workflows/firebase-hosting-merge.yml)  
 Demo: [https://react-chat-app-dc540.web.app](https://react-chat-app-dc540.web.app)
 
 ## Usage
