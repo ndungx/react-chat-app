@@ -112,6 +112,8 @@ export default function ChatWindow() {
                 displayName
             });
 
+            setInputValue('');
+
             form.resetFields(['message']);
 
             //focus input after send message
@@ -194,6 +196,7 @@ export default function ChatWindow() {
                                         placeholder="Type a message..."
                                         bordered={false}
                                         autoComplete="off"
+                                        value={inputValue}
                                     />
                                 </Form.Item>
                                 <ButtonStyled onClick={handleOnSubmit}>
