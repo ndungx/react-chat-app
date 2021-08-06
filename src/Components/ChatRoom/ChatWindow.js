@@ -103,7 +103,7 @@ export default function ChatWindow() {
     }
 
     const handleOnSubmit = () => {
-        if (inputValue.length > 0) {
+        if (inputValue.trim().length > 0) {
             addDocument('messages', {
                 text: inputValue,
                 uid,
