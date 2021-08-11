@@ -11,7 +11,7 @@ npm install
 ### Get SSL Certificate
 Because login with Facebook need HTTPS, you need to create a self-signed certificate for your localhost  
 
-The following steps will create a SSL certìicate  
+The following steps will create a SSL certificate  
    - You need to install [Chocolatey](https://chocolatey.org/install) first so that you can install mkcert  
    - Open powershell and run  
 ```
